@@ -1,6 +1,6 @@
 # macos-playground
 
-NOT YET IMPLEMENTED
+NOT YET FULLY IMPLEMENTED
 
 📚 Learning and exploring macOS.
 
@@ -19,9 +19,30 @@ with regards to macOS. By contrast, I explore computing things in other playgrou
 * <https://github.com/dgroomes/web-playground>
 
 
+## Instructions
+
+Follow these instructions to build and run the example project.
+
+1. Pre-requisite: Swift
+   * I have Swift 5.7.2 installed.
+2. Build the program binary
+   * ```shell
+     swift build
+     ```
+3. Run the program binary
+   * ```shell
+     .build/arm64-apple-macosx/debug/MacOSPlayground
+     ```
+4. TODO do the rest. Package as an application, etc.
+
+
 ## Wish List
 
 General clean ups, todos and things I wish to implement for this project:
 
-* [ ] I want to create a macOS *application*. Specifically, something that is in the `/Applications/` directory. I want
-  to see how an application (process) is launched, how it gets its PATH set, etc.
+* [ ] IN PROGRESS I want to create a macOS *application*. Specifically, something that is in the `/Applications/` directory. I want
+  to see how an application (process) is launched, how it gets its PATH set, etc. Let's create an executable Swift binary
+  that we package up (not sure the right words to use here) into `/Applications/` and see what happens when we launch it.
+    * DONE Write a sample Swift program
+    * Package the program into `/Applications/` (.plist etc). Is there an easy way to do this? I'm also interested in
+      just hand writing the config file and moving the executable there by hand too.
