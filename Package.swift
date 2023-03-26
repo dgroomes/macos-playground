@@ -8,9 +8,9 @@ let package = Package(
             .macOS(.v12)
         ],
         products: [
-            .executable(name: "MacOSPlayground", targets: ["MacOSPlayground"]),
+            .executable(name: "PrintPath", targets: ["PrintPath"]),
         ],
         targets: [
-            .executableTarget(name: "MacOSPlayground")
+            .executableTarget(name: "PrintPath")
         ]
 )

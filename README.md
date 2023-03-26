@@ -13,9 +13,9 @@ This repository is for me to explore macOS-specific things like `.plist` files, 
 with regards to macOS. By contrast, I explore computing things in other playground repos like:
 
 * <https://github.com/dgroomes/bash-playground>
-* <https://github.com/dgroomes/docker-playground>
 * <https://github.com/dgroomes/git-playground>
 * <https://github.com/dgroomes/linux-playground>
+* <https://github.com/dgroomes/swift-playground>
 * <https://github.com/dgroomes/web-playground>
 
 
@@ -31,7 +31,15 @@ Follow these instructions to build and run the example project.
      ```
 3. Run the program binary
    * ```shell
-     .build/arm64-apple-macosx/debug/MacOSPlayground
+     .build/arm64-apple-macosx/debug/PrintPath
+     ```
+   * The output will look something like the following, but your PATH will be different because it's natural to customize
+     the PATH as you install and developer software on your computer. (I pared down my path for effect)
+   * ```shell
+     ❯ .build/arm64-apple-macosx/debug/PrintPath
+     Welcome to 'macos-playground'! This message is brought to you by a program written in the Swift programming language.
+     The 'PATH' environment variable is set to:
+     /usr/local/pgsql/bin/:/usr/local/opt/curl/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
      ```
 4. TODO do the rest. Package as an application, etc.
 
@@ -44,5 +52,6 @@ General clean ups, todos and things I wish to implement for this project:
   to see how an application (process) is launched, how it gets its PATH set, etc. Let's create an executable Swift binary
   that we package up (not sure the right words to use here) into `/Applications/` and see what happens when we launch it.
     * DONE Write a sample Swift program
-    * Package the program into `/Applications/` (.plist etc). Is there an easy way to do this? I'm also interested in
+    * DONE (manually) Package the program into `/Applications/` (.plist etc). Is there an easy way to do this? I'm also interested in
       just hand writing the config file and moving the executable there by hand too.
+    * Write the instructions for packaging into `/Applications/`
