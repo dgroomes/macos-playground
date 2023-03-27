@@ -9,8 +9,10 @@ let package = Package(
         ],
         products: [
             .executable(name: "PrintPath", targets: ["PrintPath"]),
+            .executable(name: "InspectExtendedAttributes", targets: ["InspectExtendedAttributes"])
         ],
         targets: [
-            .executableTarget(name: "PrintPath")
+            .executableTarget(name: "PrintPath"),
+            .executableTarget(name: "InspectExtendedAttributes")
         ]
 )

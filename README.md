@@ -68,13 +68,22 @@ Follow these instructions to build the `PrintPath` Swift program, bundle it as a
    * ```shell
      cat /usr/local/var/log/macos-playground.log
      ```
-   * The should look something like the following.
+   * The output should look something like the following.
    * ```text
      20:59:39: Welcome to 'macos-playground'! This message is brought to you by a program written in the Swift programming language.
      20:59:39: The 'PATH' environment variable is set to:
      20:59:39: /usr/bin:/bin:/usr/sbin:/sbin
      ```
-   * Interesting, the PATH is much shorter than when I ran the program from the shell. Why is that?
+   * Interesting, the PATH is much shorter than when I ran the program from the shell. Why is that? 
+10. Next, try running the `InspectExtendedAttributes` program
+   * ```shell
+     swift run InspectExtendedAttributes /Applications/Visual\ Studio\ Code.app/
+     ```
+   * It should look something like the following.
+   * ```text
+     Extended attributes for /Applications/Visual Studio Code.app/:
+       com.apple.macl: 72 bytes
+     ```
 
 
 ## Wish List
@@ -88,3 +97,6 @@ General clean ups, todos and things I wish to implement for this project:
     * DONE (manually) Package the program into `/Applications/` (.plist etc). Is there an easy way to do this? I'm also interested in
       just hand writing the config file and moving the executable there by hand too.
     * DONE Write the instructions for packaging into `/Applications/`
+* [ ] IN PROGRESS Investigate "extended attributes" (xattrs) on macOS. What are they? How do I view them? Who sets them? I only know
+  about xattrs because of the quarantine feature but are there other useful ones?
+    * I implemented it for a file but I want to do it for a directory, recursively on its files.
