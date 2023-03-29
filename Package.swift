@@ -8,11 +8,11 @@ let package = Package(
             .macOS(.v12)
         ],
         products: [
-            .executable(name: "PrintPath", targets: ["PrintPath"]),
+            .executable(name: "PrintEnv", targets: ["PrintEnv"]),
             .executable(name: "InspectExtendedAttributes", targets: ["InspectExtendedAttributes"])
         ],
         targets: [
-            .executableTarget(name: "PrintPath"),
+            .executableTarget(name: "PrintEnv"),
             .executableTarget(name: "InspectExtendedAttributes")
         ]
 )

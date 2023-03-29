@@ -1,9 +1,14 @@
 import Foundation
 
 /*
-This is a Swift program that prints the value of the 'PATH' environment variable. For convenience, it prints to
-standard output and to a custom log file. This program is intended to be ran from the commandline in a shell or launched
-from Finder/Spotlight as an application in the `/Applications/` directory.
+This is a Swift program that prints some information about its environment.
+
+Specifically, it prints the value of the 'PATH' environment variable and another environment (TODO). The objective of
+this program is to make it clear how to control the environment that a macOS app operates in. On macOS, launchd is "the
+main character" of this story.
+
+For convenience, the program prints to standard output AND to a custom log file. This program is intended to be ran from
+the commandline in a shell or launched from Finder/Spotlight as an application in the `/Applications/` directory.
 */
 
 // We're going to log to this file.
