@@ -98,7 +98,9 @@ General clean-ups, todos and things I wish to implement for this project:
 * [ ] Investigate "extended attributes" (xattrs) on macOS. What are they? How do I view them? Who sets them? I only know
   about xattrs because of the quarantine feature but are there other useful ones?
     * I implemented it for a file but I want to do it for a directory, recursively on its files.
-* [ ] IN PROGRESS launchd. I want some familiarity with launchd. Can I customize the environment variables for a macOS app via a `.plist`
+* [ ] launchd (basics) Can I do a "hello world" example of launchd? I was able to make a Launch Agent that runs a `touch`
+  command on a schedule, but I struggled making any other example. I need to figure this out.
+* [ ] launchd (advanced). I want some familiarity with launchd. Can I customize the environment variables for a macOS app via a `.plist`
   file (which is ultimately ready by launchd?)?
     * We're going to co-opt the `PrintPath` program to do more stuff so let's rename it to `PrintEnv` and have it print
       the PATH and other environment variables. 
