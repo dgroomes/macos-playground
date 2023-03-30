@@ -58,13 +58,13 @@ Follow these instructions to build the `PrintEnv` Swift program, bundle it as an
    * ```shell
      cp .build/arm64-apple-macosx/debug/PrintEnv /Applications/PrintEnv.app/Contents/MacOS/
      ```
-8. Launch the program from Finder
+8. Launch the program from Spotlight
    * Open Spotlight (Cmd + Space), type in `PrintEnv`, and it will appear in the "Applications" section. Click it to
      launch it.
    * Nothing will appear to happen! That's okay. The program only writes some logs to a file and then exits.
 9. View the logs
    * ```shell
-     cat /usr/local/var/log/macos-playground.log
+     tail /usr/local/var/log/macos-playground.log
      ```
    * The output should look something like the following.
    * ```text
@@ -72,7 +72,8 @@ Follow these instructions to build the `PrintEnv` Swift program, bundle it as an
      20:59:39: The 'PATH' environment variable is set to:
      20:59:39: /usr/bin:/bin:/usr/sbin:/sbin
      ```
-   * Interesting, the PATH is much shorter than when I ran the program from the shell. Why is that? 
+   * The PATH is much shorter than when I ran the program from the shell because of the `loginwindow` process. See [this
+     StackExchange answer](https://apple.stackexchange.com/a/243946) for more details.
 10. Next, try running the `InspectExtendedAttributes` program
    * ```shell
      swift run InspectExtendedAttributes /Applications/Visual\ Studio\ Code.app/
@@ -102,5 +103,26 @@ General clean-ups, todos and things I wish to implement for this project:
   command on a schedule, but I struggled making any other example. I need to figure this out.
 * [ ] launchd (advanced). I want some familiarity with launchd. Can I customize the environment variables for a macOS app via a `.plist`
   file (which is ultimately ready by launchd?)?
-    * We're going to co-opt the `PrintPath` program to do more stuff so let's rename it to `PrintEnv` and have it print
+    * DONE We're going to co-opt the `PrintPath` program to do more stuff so let's rename it to `PrintEnv` and have it print
       the PATH and other environment variables. 
+    * Create a launch agent (??) `.plist` file that corresponds to the `PrintEnv` app (by way of the bundle identifier?)
+      and in this file, set an environment variable and see if it's available to the program. I want to connect the dots
+      between the `.plist` file and the program.
+    * I'm struggling with this. I can't get the env var defined in the launch agent `.plist` file to be seen by the
+      program. I must have not connected the dots correctly. Next, let me try launching the program on a schedule from
+      the launch agent, so I know for sure that the launch agent is having an effect. I should be able to see the logs
+      continually be updated to prove that the program is running on a schedule.
+* [ ] Redirect standard out to a log file using the `<key>StandardOutPath</key>` config in the launch agent `.plist` file.
+  This is way better than doing the silly "log to standard output and custom file" thing that I implemented. (Note to self:
+  I struggled with this and haven't figured it out yet).
+
+
+## Reference
+
+* [Apple Developer docs: *Information Property List*](https://developer.apple.com/documentation/bundleresources/information_property_list)
+  * > Bundles, which represent executables of different kinds, contain an information property list file.
+* [Apple Developer docs: *App execution*](https://developer.apple.com/documentation/bundleresources/information_property_list/app_execution)
+  * > you may need to specify under what conditions your app can launch, the environment that it should launch into, and what should happen when it terminates
+* [Apple Documentation Archive: *Creating Launch Daemons and Agents*](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html)
+  * Why can't I find this documentation in the non-archived developer docs?
+  * Tip: run `man launchd.plist` to see the reference documentation for the `.plist` file format.
