@@ -74,15 +74,34 @@ Follow these instructions to build the `PrintEnv` Swift program, bundle it as an
      ```
    * The PATH is much shorter than when I ran the program from the shell because of the `loginwindow` process. See [this
      StackExchange answer](https://apple.stackexchange.com/a/243946) for more details.
-10. Next, try running the `InspectExtendedAttributes` program
-   * ```shell
-     swift run InspectExtendedAttributes /Applications/Visual\ Studio\ Code.app/
-     ```
-   * It should look something like the following.
-   * ```text
-     Extended attributes for /Applications/Visual Studio Code.app/:
-       com.apple.macl: 72 bytes
-     ```
+   * Next, let's explore macOS extended attributes. 
+10. Run the `InspectExtendedAttributes` program
+    * ```shell
+      swift run InspectExtendedAttributes /Applications/Visual\ Studio\ Code.app/
+      ```
+    * It should look something like the following.
+    * ```text
+      Extended attributes for /Applications/Visual Studio Code.app/:
+        com.apple.macl: 72 bytes
+      ```
+    * Next, let's explore Launch Agents.
+11. Create a Launch Agent
+    * ```shell
+      cp dgroomes.macosplayground.touchfile.plist ~/Library/LaunchAgents/
+      ```
+    * Load the Launch Agent
+    * ```shell
+      launchctl load ~/Library/LaunchAgents/dgroomes.macosplayground.touchfile.plist
+      ```
+    * The `touchfile` program should run every 10 seconds. You can verify this by running a `watch` command to continuously
+      list the files of the `/tmp` directory.
+    * ```shell
+      watch -n 3 'ls -l /tmp/hello*'
+      ```
+    * When you're satisfied that the Launch Agent is working, you can unload it.
+    * ```shell
+      launchctl unload ~/Library/LaunchAgents/dgroomes.macosplayground.touchfile.plist
+      ```
 
 
 ## Wish List
@@ -99,8 +118,10 @@ General clean-ups, todos and things I wish to implement for this project:
 * [ ] Investigate "extended attributes" (xattrs) on macOS. What are they? How do I view them? Who sets them? I only know
   about xattrs because of the quarantine feature but are there other useful ones?
     * I implemented it for a file but I want to do it for a directory, recursively on its files.
-* [ ] launchd (basics) Can I do a "hello world" example of launchd? I was able to make a Launch Agent that runs a `touch`
+* [ ] IN PROGRESS launchd (basics) Can I do a "hello world" example of launchd? I was able to make a Launch Agent that runs a `touch`
   command on a schedule, but I struggled making any other example. I need to figure this out.
+    * DONE Let's get a schedule Launch Agent job going.
+    * Let's get a non-scheduled Launch Agent. Let's `echo hello`.
 * [ ] launchd (advanced). I want some familiarity with launchd. Can I customize the environment variables for a macOS app via a `.plist`
   file (which is ultimately ready by launchd?)?
     * DONE We're going to co-opt the `PrintPath` program to do more stuff so let's rename it to `PrintEnv` and have it print
