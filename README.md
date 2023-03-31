@@ -143,8 +143,8 @@ General clean-ups, todos and things I wish to implement for this project:
   command on a schedule, but I struggled making any other example. I need to figure this out.
     * DONE Let's get a schedule Launch Agent job going.
     * DONE Let's get a non-scheduled Launch Agent. Let's `echo hello`.
-* [ ] launchd (advanced). I want some familiarity with launchd. Can I customize the environment variables for a macOS app via a `.plist`
-  file (which is ultimately ready by launchd?)?
+* [ ] (ABANDON; I think this was in vain because I misinterpeted launch agents. They can't control bundles. 'launchctl setenv' is the ticket.) launchd (advanced). I want some familiarity with launchd. Can I customize the environment variables for a macOS app via a `.plist`
+  file (which is ultimately read by launchd?)?
     * DONE We're going to co-opt the `PrintPath` program to do more stuff so let's rename it to `PrintEnv` and have it print
       the PATH and other environment variables. 
     * Create a launch agent (??) `.plist` file that corresponds to the `PrintEnv` app (by way of the bundle identifier?)
