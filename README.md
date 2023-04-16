@@ -123,6 +123,16 @@ Follow these instructions to build the `PrintEnv` Swift program, bundle it as an
     * ```shell
       launchctl unload ~/Library/LaunchAgents/dgroomes.macosplayground.touchfile.plist
       ```
+    * Next, let's explore how to run subprocesses.
+13. Run the `ProcessManagement` program
+    * ```shell
+      swift run ProcessManagement
+      ```
+    * It should look something like the following.
+    * ```text
+      Let's explore how to run subprocesses from a Swift program.
+      The 'echo' command says hello!  (... and it was invoked from a Swift program)
+      ```
 
 
 ## Wish List
