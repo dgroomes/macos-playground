@@ -132,6 +132,22 @@ Follow these instructions to build the `PrintEnv` Swift program, bundle it as an
     * ```text
       Let's explore how to run subprocesses from a Swift program.
       The 'echo' command says hello!  (... and it was invoked from a Swift program)
+      
+      Let's kick off multiple 'sleep' subprocesses all at once...
+      'sleep' subprocess 1: Subprocess(pid: 9396, state: running)
+      'sleep' subprocess 2: Subprocess(pid: 9397, state: running)
+      'sleep' subprocess 3: Subprocess(pid: 9398, state: running)
+      'sleep' subprocess 4: Subprocess(pid: 9399, state: running)
+      'sleep' subprocess 5: Subprocess(pid: 9400, state: running)
+      The first three subprocesses have completed.
+      
+      It took 3.009290833 seconds to start and wait for the completion (or pre-emptively cancel) all five of the 'sleep' subprocesses.
+      The final state of the subprocesses is:
+      'sleep' subprocess 1: Subprocess(pid: 9396, state: completed)
+      'sleep' subprocess 2: Subprocess(pid: 9397, state: completed)
+      'sleep' subprocess 3: Subprocess(pid: 9398, state: completed)
+      'sleep' subprocess 4: Subprocess(pid: 9399, state: cancelled)
+      'sleep' subprocess 5: Subprocess(pid: 9400, state: cancelled)
       ```
 
 

@@ -1,11 +1,11 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.8
 
 import PackageDescription
 
 let package = Package(
         name: "swift-playground",
         platforms: [
-            .macOS(.v12)
+            .macOS(.v13)
         ],
         products: [
             .executable(name: "PrintEnv", targets: ["PrintEnv"]),
