@@ -17,13 +17,7 @@ public final class Subprocess {
 
     private let process: Process
     private var cancelled = false
-
-    /// A future that will be completed when the process terminates. This future allows us to expose an 'await' function
-    /// for calling code that likes to use async/await.
-    ///
-    /// Note: I think it is very natural to want to await the termination of a process. I've struggled in my programming
-    /// because this is the ergonomic I'm looking for, but couldn't find and had a hard time recreating.
-    private let terminationFuture: Future<Int32, Error>
+    private let terminationFuture: CompletableFuture<Int32>
 
     /// A convenience static factory method to start a Subprocess from a file path and a list of arguments.
     ///
@@ -53,32 +47,13 @@ public final class Subprocess {
     }
 
     private init(executableUrl: URL, arguments: [String] = []) {
-
-        // This workaround is needed because if I don't use it, then the Swift compiler will complain that a closure
-        // (the closure used in the Future init) assigns to 'self' before 'self' has fully initialized (or something like
-        // that). Makes sense, but this is the pattern I'm familiar with (especially from JavaScript) and so I'll use it.
-        // I'm hopeful I'll learn much more about async programming in Swift and just Swift in general so that I can do
-        // something more idiomatic.
-        struct WorkaroundTheSwiftCompilerReferenceHolder<T> {
-            var ref: T?
-        }
-
-        var refHolder = WorkaroundTheSwiftCompilerReferenceHolder<(Result<Int32, Error>) -> Void>()
-
-        // The Swift compiler doesn't know that the closure is executed immediately so it forbids us from referencing
-        // 'self' in the closure. But we know better.
-        terminationFuture = Future { promise in
-            refHolder.ref = promise
-        }
-
-        // Again, we know better. We know that the '.ref' field was assigned so we can forcefully dereference it with "!".
-        let terminationPromise = refHolder.ref!
+        terminationFuture = CompletableFuture<Int32>()
 
         process = Process()
         process.executableURL = executableUrl
         process.arguments = arguments
         process.terminationHandler = { process in
-            terminationPromise(.success(process.terminationStatus))
+            self.terminationFuture.completeSuccessfully(process.terminationStatus)
         }
     }
 
@@ -88,7 +63,7 @@ public final class Subprocess {
     /// - Throws: An error propagated from the underlying `Process` instance.
     @discardableResult
     public func awaitTermination() async throws -> Int32 {
-        try await terminationFuture.value
+        try await terminationFuture.await()
     }
 
     /// Get a human readable description of the process. The description includes the process ID and the process
@@ -106,7 +81,6 @@ public final class Subprocess {
 
         return "Subprocess(pid: \(process.processIdentifier), state: \(state))"
     }
-
 
     /// Cancel the subprocess.
     public func cancel() {

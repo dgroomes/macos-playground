@@ -183,6 +183,7 @@ General clean-ups, todos and things I wish to implement for this project:
 * [ ] Redirect standard out to a log file using the `<key>StandardOutPath</key>` config in the launch agent `.plist` file.
   This is way better than doing the silly "log to standard output and custom file" thing that I implemented. (Note to self:
   I struggled with this and haven't figured it out yet).
+* [x] DONE (`CompletableFuture`) Try abstracting the circuitous future/promise trick I need for async-ifying `Process`.
 
 
 ## Reference
