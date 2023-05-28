@@ -20,21 +20,31 @@ private let loggerTimeFormatter = {
     return it
 }()
 
-/*
-Print a message to standard out and write it to the log. This is convenient because when you run this program from the
-shell, you will be able to see the messages printed to standard out, but when you run launch this program from Finder/Spotlight
-then you can look at the log file to see the messages.
 
-The message in the log file will be formatted with a timestamp and a trailing newline.
-*/
+/// Print a message to standard out and write it to the log. This is convenient because when you run this program from the
+/// shell, you will be able to see the messages printed to standard out, but when you run launch this program from Finder/Spotlight
+/// then you can look at the log file to see the messages.
+///
+/// The message in the log file will be formatted with a timestamp and a trailing newline.
 public func log(_ message: String) {
     print(message)
+    
+    let fileManager = FileManager.default
+    
+    // Create the log file's containing directory if it does not already exist. This is similar to "mkdir -p".
+    let directoryURL = fileURL.deletingLastPathComponent()
+    do {
+        try fileManager.createDirectory(at: directoryURL, withIntermediateDirectories: true, attributes: nil)
+    }
+    catch {
+        fatalError("Error while trying to create the log file's containing directory: \(error)")
+    }
 
     // Create the log file if it does not already exist.
-    if !FileManager.default.fileExists(atPath: filePath) {
+    if !fileManager.fileExists(atPath: filePath) {
         // Create empty file
-        if !FileManager.default.createFile(atPath: filePath, contents: nil) {
-            print("Error creating the log file.")
+        if !fileManager.createFile(atPath: filePath, contents: nil) {
+            fatalError("Error creating the log file.")
         }
     }
 
@@ -48,7 +58,7 @@ public func log(_ message: String) {
         fileHandle.write(data)
         fileHandle.closeFile()
     } catch {
-        print("Error appending to the log file: \(error)")
+        fatalError("Error appending to the log file: \(error)")
     }
 }
 

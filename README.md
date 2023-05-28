@@ -162,14 +162,14 @@ General clean-ups, todos and things I wish to implement for this project:
     * DONE (manually) Package the program into `/Applications/` (.plist etc). Is there an easy way to do this? I'm also interested in
       just hand writing the config file and moving the executable there by hand too.
     * DONE Write the instructions for packaging into `/Applications/`
-* [ ] Investigate "extended attributes" (xattrs) on macOS. What are they? How do I view them? Who sets them? I only know
+* [x] DONE Investigate "extended attributes" (xattrs) on macOS. What are they? How do I view them? Who sets them? I only know
   about xattrs because of the quarantine feature but are there other useful ones?
-    * I implemented it for a file but I want to do it for a directory, recursively on its files.
+    * SKIP I implemented it for a file but I want to do it for a directory, recursively on its files.
 * [x] DONE launchd (basics) Can I do a "hello world" example of launchd? I was able to make a Launch Agent that runs a `touch`
   command on a schedule, but I struggled making any other example. I need to figure this out.
     * DONE Let's get a schedule Launch Agent job going.
     * DONE Let's get a non-scheduled Launch Agent. Let's `echo hello`.
-* [ ] (ABANDON; I think this was in vain because I misinterpeted launch agents. They can't control bundles. 'launchctl setenv' is the ticket.) launchd (advanced). I want some familiarity with launchd. Can I customize the environment variables for a macOS app via a `.plist`
+* [ ] ABANDON (I think this was in vain because I misinterpeted launch agents. They can't control bundles. 'launchctl setenv' is the ticket.) launchd (advanced). I want some familiarity with launchd. Can I customize the environment variables for a macOS app via a `.plist`
   file (which is ultimately read by launchd?)?
     * DONE We're going to co-opt the `PrintPath` program to do more stuff so let's rename it to `PrintEnv` and have it print
       the PATH and other environment variables. 
@@ -184,6 +184,10 @@ General clean-ups, todos and things I wish to implement for this project:
   This is way better than doing the silly "log to standard output and custom file" thing that I implemented. (Note to self:
   I struggled with this and haven't figured it out yet).
 * [x] DONE (`CompletableFuture`) Try abstracting the circuitous future/promise trick I need for async-ifying `Process`.
+* [ ] Defect: the PrintEnv program needs access to create and write to the directory `/usr/local/var/log/`. Even though
+  file permissions isn't the purpose of PrintEnv, it's a good thing to learn and we really do need to write to a file in
+  PrintEnv because it runs headlessly. How else would we observe it? Or maybe it is worthwhile to make a 'FilePermissions'
+  program that comes before PrintEnv.
 
 
 ## Reference
