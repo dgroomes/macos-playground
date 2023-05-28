@@ -184,10 +184,18 @@ General clean-ups, todos and things I wish to implement for this project:
   This is way better than doing the silly "log to standard output and custom file" thing that I implemented. (Note to self:
   I struggled with this and haven't figured it out yet).
 * [x] DONE (`CompletableFuture`) Try abstracting the circuitous future/promise trick I need for async-ifying `Process`.
-* [ ] Defect: the PrintEnv program needs access to create and write to the directory `/usr/local/var/log/`. Even though
+* [ ] HOLD (I need to go deeper in Xcode and Signing and Capabilities; it is a rich subject in itself and I need a minimal
+  follawable example) Defect: the PrintEnv program needs access to create and write to the directory `/usr/local/var/log/`. Even though
   file permissions isn't the purpose of PrintEnv, it's a good thing to learn and we really do need to write to a file in
   PrintEnv because it runs headlessly. How else would we observe it? Or maybe it is worthwhile to make a 'FilePermissions'
-  program that comes before PrintEnv.
+  program that comes before PrintEnv. UPDATE: the macOS concept for this is "entitlements" and they are expressed in an
+  "Entitlements.plist" file but I think it needs signing so now I'm in the deep end.
+* [ ] Idiomatic Xcode-driven application. I have been handwriting `swift build` commands, `cp`/`chmod` commands, and
+  `Info.plist` files in part to grok the physical makeup of application bundles, but also in part because I didn't want
+  to bother learning the Xcode abstractions over these things. But now the time has come. I need the Xcode abstractions
+  because I'm getting into another hard subject which is Capabilities and for that I need Signing. (I mean, there has to
+  be a headless/handwritten way to do signing right??). In any case, "idiomatic Xcode app" is a good thing to learn.
+* [ ] Manual code signing. I should be able to use headless codesigning tools like `codesign` right?  
 
 
 ## Reference
@@ -199,3 +207,5 @@ General clean-ups, todos and things I wish to implement for this project:
 * [Apple Documentation Archive: *Creating Launch Daemons and Agents*](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html)
   * Why can't I find this documentation in the non-archived developer docs?
   * Tip: run `man launchd.plist` to see the reference documentation for the `.plist` file format.
+* [Apple Developer docs: *Entitlements*](https://developer.apple.com/documentation/bundleresources/entitlements)
+  > An app stores its entitlements as key-value pairs embedded in the code signature of its binary executable.
