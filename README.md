@@ -19,22 +19,25 @@ This repository is for me to explore macOS-specific things like `.plist` files, 
 
 ## Instructions
 
-Follow these instructions to build the `PrintEnv` Swift program, bundle it as an app, and run it from Finder.
+Follow these instructions to build and run the demo programs.
 
 1. Pre-requisite: Swift
-   * I'm using Swift 5.7.2.
-2. Build the program binary
-   * ```shell
-     swift build
+   * I'm using Swift 5.8
+2. Build the PrintEnv program binary
+   *
+     ```shell
+     swift build --product PrintEnv
      ```
 3. Run the program binary from the shell
-   * ```shell
+   * 
+     ```shell
      .build/arm64-apple-macosx/debug/PrintEnv
      ```
    * The output will look something like the following, but your PATH will be different because it's natural to customize
      the PATH as you install and developer software on your computer. (I pared down my PATH for effect)
-   * ```text
-     ❯ .build/arm64-apple-macosx/debug/PrintEnv
+   * 
+     ```text
+     $ .build/arm64-apple-macosx/debug/PrintEnv
      Welcome to 'macos-playground'! This message is brought to you by a program written in the Swift programming language.
      The 'PATH' environment variable is set to:
      /usr/local/pgsql/bin/:/usr/local/opt/curl/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
@@ -42,20 +45,24 @@ Follow these instructions to build the `PrintEnv` Swift program, bundle it as an
    * Next, we're going to start the steps to bundle this program into a macOS *application*. By application, I mean
      something that is in the `/Applications/` directory and has a name ending in `.app`, like `Calculator.app`.
 4. Create the `PrintEnv.app` directory and make it executable
-   * ```shell
+   * 
+     ```shell
      mkdir /Applications/PrintEnv.app
      chmod +x /Applications/PrintEnv.app
      ```
 5. Create the `PrintEnv.app` directory structure
-   * ```shell
+   *
+     ```shell
      mkdir -p /Applications/PrintEnv.app/Contents/MacOS
      ```
 6. Copy over the `Info.plist` file
-   * ```shell
+   *
+     ```shell
      cp Info.plist /Applications/PrintEnv.app/Contents/
      ```
 7. Copy over the `PrintEnv` binary
-   * ```shell
+   *
+     ```shell
      cp .build/arm64-apple-macosx/debug/PrintEnv /Applications/PrintEnv.app/Contents/MacOS/
      ```
 8. Launch the program from Spotlight
@@ -63,11 +70,13 @@ Follow these instructions to build the `PrintEnv` Swift program, bundle it as an
      launch it.
    * Nothing will appear to happen! That's okay. The program only writes some logs to a file and then exits.
 9. View the logs
-   * ```shell
-     tail /usr/local/var/log/macos-playground.log
+   * 
+     ```shell
+     tail ~/Library/Application\ Support/PrintEnv/log.txt
      ```
    * The output should look something like the following.
-   * ```text
+   * 
+     ```text
      20:59:39: Welcome to 'macos-playground'! This message is brought to you by a program written in the Swift programming language.
      20:59:39: The 'PATH' environment variable is set to:
      20:59:39: /usr/bin:/bin:/usr/sbin:/sbin
@@ -76,60 +85,75 @@ Follow these instructions to build the `PrintEnv` Swift program, bundle it as an
      StackExchange answer](https://apple.stackexchange.com/a/243946) for more details.
    * Next, let's explore macOS extended attributes. 
 10. Run the `InspectExtendedAttributes` program
-    * ```shell
+    *
+      ```shell
       swift run InspectExtendedAttributes /Applications/Visual\ Studio\ Code.app/
       ```
     * It should look something like the following.
-    * ```text
+    * 
+      ```text
       Extended attributes for /Applications/Visual Studio Code.app/:
         com.apple.macl: 72 bytes
       ```
     * Next, let's explore Launch Agents.
 11. Create a Launch Agent
-    * ```shell
+    * 
+      ```shell
       cp dgroomes.macosplayground.echohello.plist ~/Library/LaunchAgents/
       ```
+    * Warning: the properties list file `*.plist` hardcodes to my home directory because I could not find a way to
+      express a dynamic reference like `~` or `$HOME` like we do in the shell. 
     * Load the Launch Agent
-    * ```shell
+    * 
+      ```shell
       launchctl load ~/Library/LaunchAgents/dgroomes.macosplayground.echohello.plist
       ```
     * Check the output of the program in the log file. Use the following command.
-    * ```shell
-      cat /usr/local/var/log/dgroomes-macos-playground-echohello.log
+    * 
+      ```shell
+      cat ~/Library/Application\ Support/EchoHello.log
       ```
     * It should look like this.
-    * ```text
+    * 
+      ```text
       Hello from macos-playground!
       ```
     * When you're satisfied that the Launch Agent is working, you can unload it.
-    * ```shell
+    * 
+      ```shell
       launchctl unload ~/Library/LaunchAgents/dgroomes.macosplayground.echohello.plist
       ```
     * Next, let's create a Launch Agent that does something else.
 12. Create a "scheduled job" Launch Agent
-    * ```shell
+    * 
+      ```shell
       cp dgroomes.macosplayground.touchfile.plist ~/Library/LaunchAgents/
       ```
     * Load the Launch Agent
-    * ```shell
+    * 
+      ```shell
       launchctl load ~/Library/LaunchAgents/dgroomes.macosplayground.touchfile.plist
       ```
-    * The `touchfile` program should run every 10 seconds. You can verify this by running a `watch` command to continuously
-      list the files of the `/tmp` directory.
-    * ```shell
-      watch -n 3 'ls -l /tmp/hello*'
+    * The `touchfile` program should run every 10 seconds. You can verify this by running a command to continuously watch
+      the list of files in the `/tmp` directory.
+    * 
+      ```shell
+      while true; do ls -l /tmp/hello*; sleep 3; done
       ```
     * When you're satisfied that the Launch Agent is working, you can unload it.
-    * ```shell
+    * 
+      ```shell
       launchctl unload ~/Library/LaunchAgents/dgroomes.macosplayground.touchfile.plist
       ```
     * Next, let's explore how to run subprocesses.
 13. Run the `ProcessManagement` program
-    * ```shell
+    * 
+      ```shell
       swift run ProcessManagement
       ```
     * It should look something like the following.
-    * ```text
+    * 
+      ```text
       Let's explore how to run subprocesses from a Swift program.
       The 'echo' command says hello!  (... and it was invoked from a Swift program)
       
@@ -180,22 +204,19 @@ General clean-ups, todos and things I wish to implement for this project:
       program. I must have not connected the dots correctly. Next, let me try launching the program on a schedule from
       the launch agent, so I know for sure that the launch agent is having an effect. I should be able to see the logs
       continually be updated to prove that the program is running on a schedule.
-* [ ] Redirect standard out to a log file using the `<key>StandardOutPath</key>` config in the launch agent `.plist` file.
-  This is way better than doing the silly "log to standard output and custom file" thing that I implemented. (Note to self:
-  I struggled with this and haven't figured it out yet).
+* [ ] In PrintEnv, redirect standard out to a log file using the `<key>StandardOutPath</key>` config in the launch agent `.plist` file.
+  This is way better than doing the silly "log to standard output and a custom file" thing that I implemented. I had success
+  logging to `Application Support/` because it doesn't need permissions.
 * [x] DONE (`CompletableFuture`) Try abstracting the circuitous future/promise trick I need for async-ifying `Process`.
-* [ ] HOLD (I need to go deeper in Xcode and Signing and Capabilities; it is a rich subject in itself and I need a minimal
-  follawable example) Defect: the PrintEnv program needs access to create and write to the directory `/usr/local/var/log/`. Even though
-  file permissions isn't the purpose of PrintEnv, it's a good thing to learn and we really do need to write to a file in
-  PrintEnv because it runs headlessly. How else would we observe it? Or maybe it is worthwhile to make a 'FilePermissions'
-  program that comes before PrintEnv. UPDATE: the macOS concept for this is "entitlements" and they are expressed in an
-  "Entitlements.plist" file but I think it needs signing so now I'm in the deep end.
+* [x] DONE Defect: the PrintEnv program needs access to create and write to the directory `/usr/local/var/log/`. It's out of
+  scope to deal with permissions/entitlements for this program. Instead, we can write to an app-specific directory in
+  `Application Support`. 
 * [ ] Idiomatic Xcode-driven application. I have been handwriting `swift build` commands, `cp`/`chmod` commands, and
   `Info.plist` files in part to grok the physical makeup of application bundles, but also in part because I didn't want
   to bother learning the Xcode abstractions over these things. But now the time has come. I need the Xcode abstractions
   because I'm getting into another hard subject which is Capabilities and for that I need Signing. (I mean, there has to
   be a headless/handwritten way to do signing right??). In any case, "idiomatic Xcode app" is a good thing to learn.
-* [ ] Manual code signing. I should be able to use headless codesigning tools like `codesign` right?  
+* [ ] Manual code signing. I should be able to use headless codesigning tools like `codesign` right?
 
 
 ## Reference

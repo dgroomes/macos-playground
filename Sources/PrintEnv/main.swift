@@ -11,9 +11,6 @@ For convenience, the program prints to standard output AND to a custom log file.
 the commandline in a shell or launched from Finder/Spotlight as an application in the `/Applications/` directory.
 */
 
-// We're going to log to this file.
-private let filePath = "/usr/local/var/log/macos-playground.log"
-private let fileURL = URL(fileURLWithPath: filePath)
 private let loggerTimeFormatter = {
     let it = DateFormatter()
     it.dateFormat = "HH:mm:ss"
@@ -28,11 +25,23 @@ private let loggerTimeFormatter = {
 /// The message in the log file will be formatted with a timestamp and a trailing newline.
 public func log(_ message: String) {
     print(message)
+
     
     let fileManager = FileManager.default
     
+    guard let appSupportDir = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+        fatalError("The 'Application Support' directory could not be found. This is unexpected.")
+    }
+    
+    // Construct the log file URL in the "application support" directory.
+    // The file is "~/Library/Application Support/PrintEnv/log.txt". It's convenient to use the '.applicationSupportDirectory'
+    // enum value.
+    let logFileUrl = appSupportDir
+        .appendingPathComponent("PrintEnv")
+        .appendingPathComponent("log.txt")
+    
     // Create the log file's containing directory if it does not already exist. This is similar to "mkdir -p".
-    let directoryURL = fileURL.deletingLastPathComponent()
+    let directoryURL = logFileUrl.deletingLastPathComponent()
     do {
         try fileManager.createDirectory(at: directoryURL, withIntermediateDirectories: true, attributes: nil)
     }
@@ -41,16 +50,16 @@ public func log(_ message: String) {
     }
 
     // Create the log file if it does not already exist.
-    if !fileManager.fileExists(atPath: filePath) {
+    if !fileManager.fileExists(atPath: logFileUrl.path) {
         // Create empty file
-        if !fileManager.createFile(atPath: filePath, contents: nil) {
+        if !fileManager.createFile(atPath: logFileUrl.path, contents: nil) {
             fatalError("Error creating the log file.")
         }
     }
 
     // Append to the log file.
     do {
-        let fileHandle = try FileHandle(forWritingTo: fileURL)
+        let fileHandle = try FileHandle(forWritingTo: logFileUrl)
         fileHandle.seekToEndOfFile()
         let currentDateTime : String = loggerTimeFormatter.string(from: Date())
         let line : String = "\(currentDateTime): \(message)\n"
