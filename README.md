@@ -173,6 +173,21 @@ Follow these instructions to build and run the demo programs.
       'sleep' subprocess 4: Subprocess(pid: 9399, state: cancelled)
       'sleep' subprocess 5: Subprocess(pid: 9400, state: cancelled)
       ```
+14. Run the `Secrets` program and save a secret message
+    * 
+      ```shell
+      swift run Secrets
+      ```
+    * Enter in a secret message, like "The secret message is 123xyz". This will be saved on the macOS login keychain.
+      Using the keychain is good for a few reasons: the secret is encrypted, its viewable from the 'Keychain Access' app,
+      and it can be accessed by trusted programs automatically so that you don't have to type it over and over again. 
+15. Run the `Secrets` program again to read the secret message
+    *
+      ```shell
+      swift run Secrets
+      ```
+    * The macOS system will prompt you twice to enter your login password. Finally, the program is granted access to
+      read the item from the keychain and it prints it to the terminal    
 
 
 ## Wish List
@@ -217,6 +232,7 @@ General clean-ups, todos and things I wish to implement for this project:
   because I'm getting into another hard subject which is Capabilities and for that I need Signing. (I mean, there has to
   be a headless/handwritten way to do signing right??). In any case, "idiomatic Xcode app" is a good thing to learn.
 * [ ] Manual code signing. I should be able to use headless codesigning tools like `codesign` right?
+* [x] DONE Credentials/secrets. Do a "hello world" of Keychain access. (Do I need signing for this?)
 
 
 ## Reference
@@ -230,3 +246,6 @@ General clean-ups, todos and things I wish to implement for this project:
   * Tip: run `man launchd.plist` to see the reference documentation for the `.plist` file format.
 * [Apple Developer docs: *Entitlements*](https://developer.apple.com/documentation/bundleresources/entitlements)
   > An app stores its entitlements as key-value pairs embedded in the code signature of its binary executable.
+* [Apple Developer docs: *Certificate, Key, and Trust Services*](https://developer.apple.com/documentation/security/certificate_key_and_trust_services)
+* [Apple Support docs: *Keychain Access User Guide*](https://support.apple.com/guide/keychain-access/welcome/mac)
+find
