@@ -187,7 +187,55 @@ Follow these instructions to build and run the demo programs.
       swift run Secrets
       ```
     * The macOS system will prompt you twice to enter your login password. Finally, the program is granted access to
-      read the item from the keychain and it prints it to the terminal    
+      read the item from the keychain and it prints it to the terminal
+16. Run the `RestoreImage` program to fetch a macOS restore image URL
+    *
+      ```shell
+      swift run RestoreImage
+      ```
+    * It will fail at the `VZMacOSRestoreImage.latestSupported` call with:
+      ```
+      Error Domain=VZErrorDomain Code=10001 "Installation service returned an unexpected error."
+      ```
+    * This operation requires the `com.apple.security.virtualization` entitlement. So, we need to sign the executable with an identity. Let's first build the executable.
+17. Build `RestoreImage`
+    * 
+      ```shell
+      swift build --target RestoreImage
+      ```
+18. Code sign the `RestoreImage` executable
+    * 
+      ```shell
+      codesign --force --sign "Apple" --entitlements RestoreImageEntitlements.plist .build/debug/RestoreImage
+      ```
+    * Note: using "Apple" in the above command happens to work because it's a substring of my actual developer certificate common name on my keychain. Refer to the `codesign` manual pages for more information.
+19. Inspect the executable's signature:
+     * 
+       ```shell
+       codesign --display --verbose=4 .build/debug/RestoreImage
+       ```
+     * When the executable is not signed with an identity, you will see a line like the following.
+     * 
+       ```text
+       Signature=adhoc
+       ```
+     * When it is signed with an identity, you'll see lines like the following.
+     * 
+       ```text
+       Signature size=4321
+       Authority=Apple Worldwide Developer Relations Certification Authority
+       ```
+20. Inspect the entitlements:
+     * 
+       ```shell
+       codesign --display --entitlements - .build/debug/RestoreImage
+       ```
+21. Run the signed `RestoreImage`
+     * 
+       ```shell
+       .build/debug/RestoreImage
+       ```
+     * Now it will work! You'll get the URL to a `.ipsw` file.
 
 
 ## Wish List
@@ -231,8 +279,10 @@ General clean-ups, todos and things I wish to implement for this project:
   to bother learning the Xcode abstractions over these things. But now the time has come. I need the Xcode abstractions
   because I'm getting into another hard subject which is Capabilities and for that I need Signing. (I mean, there has to
   be a headless/handwritten way to do signing right??). In any case, "idiomatic Xcode app" is a good thing to learn.
-* [ ] Manual code signing. I should be able to use headless codesigning tools like `codesign` right?
+* [x] DONE Manual code signing. I should be able to use headless codesigning tools like `codesign` right?
 * [x] DONE Credentials/secrets. Do a "hello world" of Keychain access. (Do I need signing for this?)
+* [ ] Consider splitting up all the examples into their own directories. The time as come for this because the plist files, deps, etc, are co-mingling and disrupting cohesion.
+* [ ] Explore OS security like seatbelt, security profiles and App Sandbox. I went on a meandering route with App Sandbox on a CLI program (generally not recommended) and I want to learn more. I think starting with a "hello world"-style program launched with `sandbox-exec` would be a good start. I understand that "App Sandbox" is generally recommended, but that brings a lot of extra layers like Launch Services, `.app` containers and using Xcode to turn knobs. While that's fine, I'd like to learn the base principles. Let's unbundle form those things. It all builds on top of the seatbelt kernel extension.
 
 
 ## Reference

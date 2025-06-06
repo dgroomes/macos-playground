@@ -11,12 +11,14 @@ let package = Package(
             .executable(name: "PrintEnv", targets: ["PrintEnv"]),
             .executable(name: "InspectExtendedAttributes", targets: ["InspectExtendedAttributes"]),
             .executable(name: "ProcessManagement", targets: ["ProcessManagement"]),
-            .executable(name: "Secrets", targets: ["Secrets"])
+            .executable(name: "Secrets", targets: ["Secrets"]),
+            .executable(name: "RestoreImage", targets: ["RestoreImage"])
         ],
         targets: [
             .executableTarget(name: "PrintEnv"),
             .executableTarget(name: "InspectExtendedAttributes"),
             .executableTarget(name: "ProcessManagement"),
-            .executableTarget(name: "Secrets")
+            .executableTarget(name: "Secrets"),
+            .executableTarget(name: "RestoreImage")
         ]
 )
