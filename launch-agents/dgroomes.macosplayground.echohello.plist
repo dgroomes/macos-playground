@@ -16,8 +16,8 @@
 	<key>KeepAlive</key>
 	<false/>
 	<key>StandardOutPath</key>
-	<string>/Users/dave/Library/Application Support/EchoHello.log</string>
+	<string>/Users/davidgroomes/Library/Application Support/EchoHello.log</string>
 	<key>StandardErrorPath</key>
-	<string>/Users/dave/Library/Application Support/EchoHello.log</string>
+	<string>/Users/davidgroomes/Library/Application Support/EchoHello.log</string>
 </dict>
 </plist>
