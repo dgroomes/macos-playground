@@ -72,6 +72,10 @@ Follow these instructions to explore Launch Agents.
 
 ## Reference
 
+* [Apple Developer docs: *Information Property List*](https://developer.apple.com/documentation/bundleresources/information_property_list)
+    * > Bundles, which represent executables of different kinds, contain an information property list file.
+* [Apple Developer docs: *App execution*](https://developer.apple.com/documentation/bundleresources/information_property_list/app_execution)
+    * > you may need to specify under what conditions your app can launch, the environment that it should launch into, and what should happen when it terminates
 * [Apple Documentation Archive: *Creating Launch Daemons and Agents*](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html)
   * Why can't I find this documentation in the non-archived developer docs?
   * Tip: run `man launchd.plist` to see the reference documentation for the `.plist` file format.

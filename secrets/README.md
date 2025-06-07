@@ -38,3 +38,8 @@ Follow these instructions to build and run the program.
 General clean-ups, TODOs and things I wish to implement for this subproject:
 
 * [ ] Nail down the exact expected series of auth prompts. I don't quite get this.  
+
+
+## Reference
+
+* [Apple Support docs: *Keychain Access User Guide*](https://support.apple.com/guide/keychain-access/welcome/mac)
