@@ -63,10 +63,16 @@ Fetch a macOS restore image URL by using code signing and the right entitlement.
 See the README in [restore-image/](restore-image/).
 
 
+### `seatbelt/`
+
+Explore macOS sandboxing using the seatbelt APIs.
+
+See the README in [seatbelt/](seatbelt/).
+
 
 ## Wish List
 
 General clean-ups, todos and things I wish to implement for this project:
 
 * [x] DONE Consider splitting up all the examples into their own directories. The time as come for this because the plist files, deps, etc, are co-mingling and disrupting cohesion.
-* [ ] Explore OS security like seatbelt, security profiles and App Sandbox. I went on a meandering route with App Sandbox on a CLI program (generally not recommended) and I want to learn more. I think starting with a "hello world"-style program launched with `sandbox-exec` would be a good start. I understand that "App Sandbox" is generally recommended, but that brings a lot of extra layers like Launch Services, `.app` containers and using Xcode to turn knobs. While that's fine, I'd like to learn the base principles. Let's unbundle form those things. It all builds on top of the seatbelt kernel extension.
+* [x] DONE Explore OS security like seatbelt, security profiles and App Sandbox. I went on a meandering route with App Sandbox on a CLI program (generally not recommended) and I want to learn more. I think starting with a "hello world"-style program launched with `sandbox-exec` would be a good start. I understand that "App Sandbox" is generally recommended, but that brings a lot of extra layers like Launch Services, `.app` containers and using Xcode to turn knobs. While that's fine, I'd like to learn the base principles. Let's unbundle form those things. It all builds on top of the seatbelt kernel extension.

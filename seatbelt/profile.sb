@@ -1,0 +1,20 @@
+;; Minimal no-write/no-net/no-subprocess template
+(version 1)
+(deny default)
+
+;; File system
+(allow file-read*)                                   ; read-only everywhere
+(allow file-write* (regex #"^(/private)?/(var/)?tmp/.*"))
+(allow file-write-data (literal "/dev/stdout") (literal "/dev/stderr") (literal "/dev/null"))
+
+;; OS Introspection
+(allow mach-lookup                                  ; only the two essentials
+    (global-name "com.apple.system.logger")
+    (global-name "com.apple.system.notification_center"))
+
+;; Process execution
+(allow process-exec*)
+
+;; Optional system calls you really need
+(allow sysctl-read)
+(allow user-preference-read)
