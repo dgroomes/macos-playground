@@ -22,27 +22,29 @@ This project is a "hello world"-style example of seatbelt and its restricting ef
 * A CLI program that attempts various operations (file access, network connections, subprocess spawning)
 * A custom seatbelt profile that restricts these operations
 
+The example program is written in Go rather than Swift or another Apple-native language. This choice is intentional: it demonstrates that seatbelting is a generic sandboxing mechanism that works across any type of program, not just those using Apple frameworks. Additionally, Go provides a more concise implementation while maintaining clarity.
+
 
 ## Instructions
 
 Follow these instructions to build and run the program.
 
-1. Pre-requisite: Swift
-   * I'm using Swift 6.1
+1. Pre-requisite: Go
+   * I'm using Go 1.24
 2. Build the program
    * 
      ```shell
-     swift build
+     go build -o seatbelt
      ```
 3. Run without sandboxing to see unrestricted behavior
    * 
      ```shell
-     .build/debug/Seatbelt
+     ./seatbelt
      ```
    * The program will successfully perform all operations: write files, make network requests, and spawn subprocesses. The output looks something like the following.
    * 
      ```text
-     $ .build/debug/Seatbelt
+     $ ./seatbelt
      ✅ Wrote to home directory
      ✅ Wrote to /tmp
      ✅ Connected to wikipedia.org
@@ -51,15 +53,15 @@ Follow these instructions to build and run the program.
 4. Run with sandboxing using the custom profile
    * 
      ```shell
-     sandbox-exec -f profile.sb .build/debug/Seatbelt
+     sandbox-exec -f profile.sb ./seatbelt
      ```
    * Now the program will be restricted according to our seatbelt profile. You'll see it fail to write files, make network connections, or spawn subprocesses. The output will look something like the following.
    * 
      ```text
-     ❌ Failed to write to home directory: You don’t have permission to save the file “seatbelt-test.txt” in the folder “davidgroomes”.
+     ❌ Failed to write to home directory: open /Users/davidgroomes/seatbelt-test.txt: operation not permitted
      ✅ Wrote to /tmp
-     ❌ Could not resolve host - nodename nor servname provided, or not known
-     ❌ Failed to run 'echo': The operation couldn’t be completed. Operation not permitted
+     ❌ Could not connect to wikipedia.org - dial tcp: lookup wikipedia.org: no such host
+     ❌ Failed to run 'echo': fork/exec /bin/echo: operation not permitted
      ```
    * Study the `profile.sb` file to understand how the restrictions are defined. The profile uses the Scheme-based SBPL (Sandbox Profile Language).
 
