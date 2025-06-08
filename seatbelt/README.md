@@ -38,7 +38,6 @@ Follow these instructions to build and run the program.
      ✅ Wrote to /tmp
      ✅ Connected to wikipedia.org
      ✅ Hello from 'echo' in subprocess
-     ✅ HOME = /Users/davidgroomes
      ```
 4. Run with sandboxing using the custom profile
    * 
@@ -52,7 +51,6 @@ Follow these instructions to build and run the program.
      ✅ Wrote to /tmp
      ❌ Could not resolve host - nodename nor servname provided, or not known
      ❌ Failed to run 'echo': The operation couldn’t be completed. Operation not permitted
-     ✅ HOME = /Users/davidgroomes
      ```
    * Study the `profile.sb` file to understand how the restrictions are defined. The profile uses the Scheme-based SBPL (Sandbox Profile Language).
 
@@ -65,5 +63,5 @@ General clean-ups, TODOs and things I wish to implement for this subproject:
 * [ ] Consider adding more sophisticated sandbox introspection - can we query specific entitlements or restrictions? Update: this is a bit hard. macOS doesn't have public APIs that indicate general seatbelting, but there is the `APP_SANDBOX_CONTAINER_ID` env var when using App Sandbox.
 * [ ] Demonstrate a more complex profile with conditional rules based on paths or other criteria.
 * [ ] I don't understand much of the SBPL file
-* [ ] Can seatbelt even restrict certain env vars?
+* [x] ANSWERED: NO. Can seatbelt even restrict certain env vars?
 * [ ] Eventually consider how I would "graduate" to App Sandbox. Using seatbelt directly is good for learning the principles, but using it directly is deprecated.

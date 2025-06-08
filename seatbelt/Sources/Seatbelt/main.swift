@@ -8,7 +8,6 @@ struct SandboxDiagnostics {
         testWriteFileTmp()
         testNetwork()
         testSubprocess()
-        testEnvironment()
     }
 }
 
@@ -94,13 +93,5 @@ private func testSubprocess() {
         }
     } catch {
         print("   ❌ Failed to run 'echo': \(error.localizedDescription)")
-    }
-}
-
-private func testEnvironment() {
-    if let value = ProcessInfo.processInfo.environment["HOME"] {
-        print("   ✅ HOME = \(value)")
-    } else {
-        print("   ❌ HOME = <not accessible>")
     }
 }
