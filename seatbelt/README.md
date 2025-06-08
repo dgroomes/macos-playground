@@ -1,17 +1,26 @@
 # seatbelt
 
-Explore macOS sandboxing using the seatbelt APIs.
+Explore macOS sandboxing using the rich but poorly documented *seatbelt* system.
 
 
 ## Overview
 
-This program demonstrates macOS seatbelt sandboxing, the kernel-level security mechanism that restricts what processes can do. The example includes:
+The *seatbelt* kernel extension and related facilities are a foundation of macOS security. The system lets you restrict processes from having certain types of access: file read/write, process spawning, network, etc. Rules are expressed by *profiles* written in the Sandbox Profile Language (SBPL). These profiles are defined extensively by macOS itself in locations like:
+
+* `/System/Library/Sandbox/Profiles/`
+* `/usr/share/sandbox/`
+
+You can express your own profiles and use them on your own processes with `sandbox-exec`. Unfortunately, `sandbox-exec` is officially deprecated in favor of App Sandbox and App Sandbox is an incomplete replacement. App Sandbox does not give the same level of fine-grained control as SBPL, and it is primarily designed for macOS application bundles (i.e. `.app`) rather than singe-file executables like CLIs.
+
+In practice, much real-world software that targets macOS continue to use seatbelt profiles directly:
+
+* [Chromium: *OSX Sandboxing Design*](https://www.chromium.org/developers/design-documents/sandbox/osx-sandboxing-design/)
+* [OpenAI Codex CLI: *Platform sandboxing details*](https://github.com/openai/codex/blob/b73426c1c40187ca13c74c03912a681072c2884f/README.md?plain=1#L187)
+
+This project is a "hello world"-style example of seatbelt and its restricting effect on a process. It includes:
 
 * A CLI program that attempts various operations (file access, network connections, subprocess spawning)
 * A custom seatbelt profile that restricts these operations
-* Operations that succeed or fail based on whether the program is sandboxed
-
-The seatbelt system is a foundation of macOS security - it's what powers things like App Sandbox, but can be used more directly by `sandbox-exec` and custom profiles.
 
 
 ## Instructions
@@ -59,7 +68,7 @@ Follow these instructions to build and run the program.
 
 General clean-ups, TODOs and things I wish to implement for this subproject:
 
-* [ ] NOT POSSIBLE (Answer: there is no Swift API) Explore programmatic seatbelting from within Swift instead of relying on `sandbox-exec`. There should be system APIs for this (perhaps `sandbox_init()`?).
+* [ ] SKIP (Answer: there is no Swift API. You could use `sandbox_init` but I won't) Explore programmatic seatbelting from within Swift instead of relying on `sandbox-exec`. There should be system APIs for this (perhaps `sandbox_init()`?).
 * [ ] Consider adding more sophisticated sandbox introspection - can we query specific entitlements or restrictions? Update: this is a bit hard. macOS doesn't have public APIs that indicate general seatbelting, but there is the `APP_SANDBOX_CONTAINER_ID` env var when using App Sandbox.
 * [ ] Demonstrate a more complex profile with conditional rules based on paths or other criteria.
 * [ ] I don't understand much of the SBPL file

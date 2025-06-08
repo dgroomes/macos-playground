@@ -65,7 +65,7 @@ See the README in [restore-image/](restore-image/).
 
 ### `seatbelt/`
 
-Explore macOS sandboxing using the seatbelt APIs.
+Explore macOS sandboxing using the rich but poorly documented *seatbelt* system.
 
 See the README in [seatbelt/](seatbelt/).
 
