@@ -34,17 +34,17 @@ Follow these instructions to build and run the program.
 2. Build the program
    * 
      ```shell
-     go build -o seatbelt
+     go build -o example-program
      ```
 3. Run without sandboxing to see unrestricted behavior
    * 
      ```shell
-     ./seatbelt
+     ./example-program
      ```
    * The program will successfully perform all operations: write files, make network requests, and spawn subprocesses. The output looks something like the following.
    * 
      ```text
-     $ ./seatbelt
+     $ ./example-program
      ✅ Wrote to home directory
      ✅ Wrote to current directory
      ✅ Connected to wikipedia.org
@@ -53,7 +53,7 @@ Follow these instructions to build and run the program.
 4. Run with sandboxing using the custom profile
    * 
      ```shell
-     sandbox-exec -f profile.sb -D PROJECT_DIR="$PWD" ./seatbelt
+     sandbox-exec -f profile.sb -D PROJECT_DIR="$PWD" ./example-program
      ```
    * Now the program will be restricted according to our seatbelt profile. You'll see it fail to write files, make network connections, or spawn subprocesses. The output will look something like the following.
    * 
