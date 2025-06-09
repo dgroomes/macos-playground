@@ -4,7 +4,7 @@
 
 ;; File system
 (allow file-read*)                                   ; read-only everywhere
-(allow file-write* (regex #"^(/private)?/(var/)?tmp/.*"))
+(allow file-write* (subpath (param "PROJECT_DIR")))
 (allow file-write-data (literal "/dev/stdout") (literal "/dev/stderr") (literal "/dev/null"))
 
 ;; OS Introspection

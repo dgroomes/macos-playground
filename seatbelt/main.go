@@ -11,7 +11,7 @@ import (
 
 func main() {
 	testWriteFileHome()
-	testWriteFileTmp()
+	testWriteFileCurrentDir()
 	testNetwork()
 	testSubprocess()
 }
@@ -22,7 +22,7 @@ func testWriteFileHome() {
 		fmt.Printf("   ❌ Could not get home directory: %v\n", err)
 		return
 	}
-	
+
 	testFile := filepath.Join(home, "seatbelt-test.txt")
 	err = os.WriteFile(testFile, []byte("Hello from macos-playground!"), 0644)
 	if err != nil {
@@ -33,13 +33,19 @@ func testWriteFileHome() {
 	}
 }
 
-func testWriteFileTmp() {
-	testFile := "/tmp/seatbelt-test.txt"
-	err := os.WriteFile(testFile, []byte("Hello from /tmp!"), 0644)
+func testWriteFileCurrentDir() {
+	cwd, err := os.Getwd()
 	if err != nil {
-		fmt.Printf("   ❌ Failed to write to '/tmp': %v\n", err)
+		fmt.Printf("   ❌ Could not get current directory: %v\n", err)
+		return
+	}
+
+	testFile := filepath.Join(cwd, "seatbelt-test.txt")
+	err = os.WriteFile(testFile, []byte("Hello from current directory!"), 0644)
+	if err != nil {
+		fmt.Printf("   ❌ Failed to write to current directory: %v\n", err)
 	} else {
-		fmt.Println("   ✅ Wrote to /tmp")
+		fmt.Println("   ✅ Wrote to current directory")
 		os.Remove(testFile)
 	}
 }
@@ -47,7 +53,7 @@ func testWriteFileTmp() {
 func testNetwork() {
 	host := "wikipedia.org"
 	port := "80"
-	
+
 	conn, err := net.Dial("tcp", net.JoinHostPort(host, port))
 	if err != nil {
 		fmt.Printf("   ❌ Could not connect to %s - %v\n", host, err)

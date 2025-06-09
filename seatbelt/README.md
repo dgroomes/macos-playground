@@ -46,20 +46,20 @@ Follow these instructions to build and run the program.
      ```text
      $ ./seatbelt
      ✅ Wrote to home directory
-     ✅ Wrote to /tmp
+     ✅ Wrote to current directory
      ✅ Connected to wikipedia.org
      ✅ Hello from 'echo' in subprocess
      ```
 4. Run with sandboxing using the custom profile
    * 
      ```shell
-     sandbox-exec -f profile.sb ./seatbelt
+     sandbox-exec -f profile.sb -D PROJECT_DIR="$PWD" ./seatbelt
      ```
    * Now the program will be restricted according to our seatbelt profile. You'll see it fail to write files, make network connections, or spawn subprocesses. The output will look something like the following.
    * 
      ```text
      ❌ Failed to write to home directory: open /Users/davidgroomes/seatbelt-test.txt: operation not permitted
-     ✅ Wrote to /tmp
+     ✅ Wrote to current directory
      ❌ Could not connect to wikipedia.org - dial tcp: lookup wikipedia.org: no such host
      ❌ Failed to run 'echo': fork/exec /bin/echo: operation not permitted
      ```
@@ -72,7 +72,8 @@ General clean-ups, TODOs and things I wish to implement for this subproject:
 
 * [ ] SKIP (Answer: there is no Swift API. You could use `sandbox_init` but I won't) Explore programmatic seatbelting from within Swift instead of relying on `sandbox-exec`. There should be system APIs for this (perhaps `sandbox_init()`?).
 * [ ] Consider adding more sophisticated sandbox introspection - can we query specific entitlements or restrictions? Update: this is a bit hard. macOS doesn't have public APIs that indicate general seatbelting, but there is the `APP_SANDBOX_CONTAINER_ID` env var when using App Sandbox.
-* [ ] Demonstrate a more complex profile with conditional rules based on paths or other criteria.
-* [ ] I don't understand much of the SBPL file
+* [x] DONE Demonstrate a more complex profile with conditional rules based on paths or other criteria. Can we use Scheme-like code to get the current dir?
+   * Update. I think I'm happy enough to just parameterize something like the cwd.
+* [ ] I don't understand much of the SBPL file.
 * [x] ANSWERED: NO. Can seatbelt even restrict certain env vars?
 * [ ] Eventually consider how I would "graduate" to App Sandbox. Using seatbelt directly is good for learning the principles, but using it directly is deprecated.
