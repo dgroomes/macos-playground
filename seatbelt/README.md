@@ -66,6 +66,19 @@ Follow these instructions to build and run the program.
    * Study the `profile.sb` file to understand how the restrictions are defined. The profile uses the Scheme-based SBPL (Sandbox Profile Language).
 
 
+## Seatbelt Deeper Dive
+
+I wish there was a comprehensive guide to macOS seatbelt. If there is, I want to link to it. In place of that I'll just build up my own notes here.
+
+A program (or a system of programs) is often inscrutable. When it's open source, we can at least read the code. When restricting a programs privileges with seatbelt can cause it to fail in unexpected ways. I've found that using `Console.app` to view the system logs is really helpful. For example, I can see logs like this:
+
+```text
+Sandbox	error	10:21:06.343282-0500	kernel	Sandbox: path_helper(24280) deny(1) file-write-data /dev/dtracehelper
+```
+
+Interesting. Why is path_helper trying to write to `/dev/dtracehelper`? If I decide it should be allowed to do that, I can add a rule to the profile. I know there is a rich history here, but I don't know anything about it. It's a starting point.
+
+
 ## Wish List
 
 General clean-ups, TODOs and things I wish to implement for this subproject:
